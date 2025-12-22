@@ -15,7 +15,7 @@ jobs:
   test:
     strategy:
       matrix:
-        node-version: [12,14,16]
+        node-version: [7,8,9]
     runs-on: ubuntu-latest
     steps: 
       - name: Get code
