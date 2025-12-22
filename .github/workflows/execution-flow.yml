@@ -8,6 +8,8 @@ on:
       - closed
     branches:
       - main
+env:
+  DEPLOYMENT_MESSAGE: Deployment has been successful!
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -23,4 +25,4 @@ jobs:
       - name: Build code
         run: npm run build
       - name: Deploy project
-        run: echo "Deploying..."
+        run: echo "${{env.DEPLOYMENT_MESSAGE}}"
