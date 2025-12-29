@@ -37,7 +37,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: project-build
-          path: ./build
+          path: dist
       - name: Custom Action
         id: hello
         uses: actions/hello-world-javascript-action@v1
