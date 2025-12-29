@@ -34,10 +34,11 @@ jobs:
       - name: Build code
         run: npm run build
       - name: Upload artifact
+        if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: project-build
-          path: dist
+          name: project-build-${{matrix.node-version}}
+          path: dist/**
       - name: Custom Action
         id: hello
         uses: actions/hello-world-javascript-action@v1
