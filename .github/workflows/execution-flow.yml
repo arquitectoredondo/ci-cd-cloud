@@ -31,11 +31,11 @@ jobs:
         run: npm run lint
       - name: Test code with coverage
         run: |
-          npx vitest run \
-            --coverage.enabled true \
-            --coverage.reporter=html \
-            --coverage.reporter=lcov \
-            --coverage.reporter=json-summary
+          npm run test -- \
+            --coverage \
+            --coverageReporters="json-summary" \
+            --coverageReporters="text" \
+            --coverageReporters="lcov"
       - name: Upload coverage artifact
         if: success()
         uses: actions/upload-artifact@v4
