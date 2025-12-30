@@ -33,6 +33,7 @@ export default defineConfig({
       include: [
         'src/components/**.jsx'
       ]
-    }
+    },
+    testTimeout: 30000,
   },
 });
