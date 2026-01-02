@@ -8,19 +8,59 @@ on:
       - closed
     branches:
       - main
+  workflow_dispatch:
+env:
+  DEPLOYMENT_MESSAGE: Deployment has been successful!
 jobs:
   test:
+    continue-on-error: true
+    strategy:
+      matrix:
+        node-version: [20,21,22]
     runs-on: ubuntu-latest
     steps: 
       - name: Get code
         uses: actions/checkout@v4
+      - name: Install NodeJs
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{matrix.node-version}}
       - name: Install dependencies
         run: npm ci
       - name: Lint
         run: npm run lint
-      - name: Test code
+      - name: Test code 
         run: npm run test
+      - name: Check coverage
+        run: npm run coverage
+      - name: generate html coverage report
+        if: success()
+        run: npm run coverage:html
+      - name: Upload coverage artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report-${{matrix.node-version}}-html
+          path: coverage/**
+      - name: Show coverage percentage
+        if: success()
+        run: |
+          COVERAGE=$(cat ./coverage/coverage-summary.json | jq '.total.lines.pct')
+          echo "Coverage percentage is: $COVERAGE%"
       - name: Build code
         run: npm run build
+      - name: Upload artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: project-build-${{matrix.node-version}}
+          path: dist/**
+      - name: Custom Action
+        id: hello
+        uses: actions/hello-world-javascript-action@v1
+        with:
+          who-to-greet: 'Martin Redondo'
+      - name: Show output
+        run: echo "The action greeted at ${{steps.hello.outputs.time}}"
       - name: Deploy project
-        run: echo "Deploying..."
+        run: echo "${{env.DEPLOYMENT_MESSAGE}}"
