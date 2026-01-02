@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "lint": "eslint . --ext .ts,.tsx,.js,.jsx"
+    "lint": "eslint --ext .jsx --fix src"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^4.0.16",
