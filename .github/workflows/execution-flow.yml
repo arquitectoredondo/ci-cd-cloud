@@ -42,8 +42,19 @@ jobs:
       - name: Show coverage percentage
         if: success()
         run: |
-          COVERAGE=$(npx nyc report --reporter=text-summary | grep 'Lines' | awk '{print $4}')
-          echo "Coverage Percentage: $COVERAGE%"
+            npx vitest run --coverage --reporter=silent
+
+            SUMMARY_FILE="coverage/coverage-summary.json"
+
+            if [ ! -f "$SUMMARY_FILE" ]; then
+              echo "Coverage summary not found at $SUMMARY_FILE"
+              exit 1
+            fi
+
+            COVERAGE=$(node -e "const fs=require('fs'); const p=JSON.parse(fs.readFileSync('$SUMMARY_FILE','utf8')); console.log(p.total.lines.pct)")
+
+            echo "Coverage Percentage: ${COVERAGE}%"
+
       - name: Build code
         run: npm run build
       - name: Upload artifact

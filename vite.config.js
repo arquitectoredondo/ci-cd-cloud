@@ -6,6 +6,7 @@ export default defineConfig({
     environment: 'node',
     coverage: {
       provider: 'v8',
+      reporter: ['json-summary', 'text-summary', 'html']
     },
   },
 });
