@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "test": "vitest",
     "coverage": "vitest run --coverage",
+    "coverage:html": "vitest run --coverage --coverageProvider=v8 --coverageReporters=html",
     "lint": "eslint --ext .jsx --fix src"
   },
   "devDependencies": {
