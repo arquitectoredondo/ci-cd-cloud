@@ -42,7 +42,7 @@ jobs:
       - name: Show coverage percentage
         if: success()
         run: |
-            npx vitest run --coverage --reporter=silent
+            npx vitest run --coverage --reporter=json-summary
 
             SUMMARY_FILE="coverage/coverage-summary.json"
 
