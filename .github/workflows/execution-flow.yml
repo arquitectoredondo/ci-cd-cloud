@@ -42,8 +42,8 @@ jobs:
       - name: Show coverage percentage
         if: success()
         run: |
-          COVERAGE=$(cat ./coverage/coverage-final.json | jq '.total.lines.pct')
-          echo "Coverage percentage is: $COVERAGE%"
+          COVERAGE=$(npx nyc report --reporter=text-summary | grep 'Lines' | awk '{print $4}')
+          echo "Coverage Percentage: $COVERAGE%"
       - name: Build code
         run: npm run build
       - name: Upload artifact
