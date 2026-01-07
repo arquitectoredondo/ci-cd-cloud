@@ -64,7 +64,7 @@ jobs:
       - name: Notify Teams on Failure
         if: success()
         run: |
-          curl -H 'Content-Type: application/json' -d '{"text": "The build or tests have been successful for Node.js version '${{matrix.node-version}}'."}' ${{secrets.TEAMS_WEBHOOK_URL}}
+          curl -H 'Content-Type: application/json' -d '{"text": "The build has been successful for Node.js version '${{matrix.node-version}}'."}' ${{secrets.TEAMS_WEBHOOK_URL}}
       - name: Upload artifact
         if: success()
         uses: actions/upload-artifact@v4
