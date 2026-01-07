@@ -61,7 +61,7 @@ jobs:
 
       - name: Build code
         run: npm run build
-      - name: Notify Teams on Failure
+      - name: Notify Teams on Success
         if: success()
         run: |
           curl -H 'Content-Type: application/json' -d '{"text": "The build has been successful for Node.js version '${{matrix.node-version}}'."}' ${{secrets.TEAMS_WEBHOOK_URL}}
