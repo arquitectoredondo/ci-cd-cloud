@@ -61,6 +61,10 @@ jobs:
 
       - name: Build code
         run: npm run build
+      - name: Notify Teams on Failure
+        if: success()
+        run: |
+          curl -H 'Content-Type: application/json' -d '{"text": "The build or tests have been successful for Node.js version '${{matrix.node-version}}'."}' ${{secrets.TEAMS_WEBHOOK_URL}}
       - name: Upload artifact
         if: success()
         uses: actions/upload-artifact@v4
@@ -76,3 +80,6 @@ jobs:
         run: echo "The action greeted at ${{steps.hello.outputs.time}}"
       - name: Deploy project
         run: echo "${{env.DEPLOYMENT_MESSAGE}}"
+
+
+# https://default76a2ae5a9f004f6b95ed5d33d77c4d.61.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/f4d115430c6946629f6fde49a3209838/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=L-SdkoJzfJ3p73g3p4y0iiIz4w68WgU82c17r8jCB3M
