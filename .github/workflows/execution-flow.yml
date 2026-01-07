@@ -63,10 +63,55 @@ jobs:
         run: npm run build
       - name: Notify Teams on Success
         if: success()
+        
         run: |
-          curl -X POST -H 'Content-Type: application/json' \
-            -d '{"text":"The build has been successful for Node.js version '${{ matrix.node-version }}'."}' \
-            "${{ secrets.TEAMS_WEBHOOK_URL }}"
+            curl -X POST \
+              -H 'Content-Type: application/json' \
+              -d '{
+                "type": "message",
+                "attachments": [
+                  {
+                    "contentType": "application/vnd.microsoft.card.adaptive",
+                    "contentUrl": null,
+                    "content": {
+                      "type": "AdaptiveCard",
+                      "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                      "version": "1.4",
+                      "body": [
+                        {
+                          "type": "TextBlock",
+                          "size": "Large",
+                          "weight": "Bolder",
+                          "text": "✅ Build successful"
+                        },
+                        {
+                          "type": "TextBlock",
+                          "wrap": true,
+                          "spacing": "Small",
+                          "text": "Node.js version: ${{ matrix.node-version }}"
+                        },
+                        {
+                          "type": "FactSet",
+                          "facts": [
+                            { "title": "Repository", "value": "${{ github.repository }}" },
+                            { "title": "Branch",     "value": "${{ github.ref_name }}" },
+                            { "title": "Commit",     "value": "${{ github.sha }}" }
+                          ]
+                        }
+                      ],
+                      "actions": [
+                        {
+                          "type": "Action.OpenUrl",
+                          "title": "View Workflow Run",
+                          "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }' \
+              "${{ secrets.TEAMS_WEBHOOK_URL }}"
+
 
       - name: Upload artifact
         if: success()
